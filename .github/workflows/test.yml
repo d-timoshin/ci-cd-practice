@@ -13,13 +13,11 @@ jobs:
       - name: Забрать код
         uses: actions/checkout@v4
 
-      - name: Установить Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Собрать Docker-образ
+        run: docker build -t ci-cd-practice:ci .
 
-      - name: Установить зависимости
-        run: pip install -r requirements.txt
+      - name: Показать версию Python в контейнере
+        run: docker run --rm ci-cd-practice:ci python --version
 
-      - name: Запустить тесты
-        run: pytest
+      - name: Запустить тесты в контейнере
+        run: docker run --rm ci-cd-practice:ci
