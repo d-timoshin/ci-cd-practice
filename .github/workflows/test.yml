@@ -19,5 +19,11 @@ jobs:
       - name: Показать версию Python в контейнере
         run: docker run --rm ci-cd-practice:ci python --version
 
+      # - name: Запустить тесты в контейнере
+      #   run: docker run --rm ci-cd-practice:ci
+        
       - name: Запустить тесты в контейнере
-        run: docker run --rm ci-cd-practice:ci
+        env:
+          BASE_URL: ${{ vars.BASE_URL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        run: docker run --rm -e BASE_URL -e TEST_PASSWORD ci-cd-practice:ci
