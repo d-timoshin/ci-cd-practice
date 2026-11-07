@@ -1,4 +1,10 @@
+import os
+
+
 def test_hello_qa():
     assert "QA" in "Hello, QA!"
-def test_second():
-    assert 2 + 2 == 4
+
+
+def test_config_is_provided():
+    assert os.getenv("BASE_URL"), "BASE_URL не передан"
+    assert os.getenv("TEST_PASSWORD"), "TEST_PASSWORD не передан"
