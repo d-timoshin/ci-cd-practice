@@ -16,14 +16,23 @@ jobs:
       - name: Собрать Docker-образ
         run: docker build -t ci-cd-practice:ci .
 
-      - name: Показать версию Python в контейнере
-        run: docker run --rm ci-cd-practice:ci python --version
+      - name: Создать папку для отчётов
+        run: mkdir -p reports
 
-      # - name: Запустить тесты в контейнере
-      #   run: docker run --rm ci-cd-practice:ci
-        
       - name: Запустить тесты в контейнере
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-        run: docker run --rm -e BASE_URL -e TEST_PASSWORD ci-cd-practice:ci
+        run: |
+          docker run --rm \
+            -e BASE_URL -e TEST_PASSWORD \
+            -v "$PWD/reports:/app/reports" \
+            ci-cd-practice:ci \
+            pytest --junitxml=reports/report.xml
+
+      - name: Сохранить отчёт
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: reports/
