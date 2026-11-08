@@ -2,7 +2,7 @@ import os
 
 
 def test_hello_qa():
-    assert "QA" in "Hello, !"
+    assert "QA" in "Hello, QA!"
 
 
 def test_config_is_provided():
